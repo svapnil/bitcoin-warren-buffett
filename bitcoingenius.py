@@ -1,4 +1,3 @@
-
 import tweepy, praw, time, sys #tweepy for twitter, PRAW for reddi
 
 from userauthinfo import ACCOUNTPRIVATEINFO #class that stores private info to use APIs
@@ -21,7 +20,12 @@ count = 0
 while(True):
     for submission in reddit.subreddit('bitcoin').controversial('day'):
 
-        firstComment = submission.comments[0].body
+        try:
+            firstComment = submission.comments[0].body
+        except IndexError as ie:
+            print(submission.title + ' doesnt have a comment - skipping')
+            continue   
+
         if firstComment in usedComments or len(firstComment) > 280:
             continue
         else:
