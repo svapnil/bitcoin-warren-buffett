@@ -21,6 +21,7 @@ for status in postedStatuses:
     usedComments.add(status.text[:100])
 
 
+
 #there is a problem where tweepy status.text will output a concatonated version of the target
 #which is an issue for the set that holds individual tweets. To fix, i will only add the first
 #100 characters of each tweet to the set to make sure i can properly identify duplicates
@@ -40,13 +41,19 @@ while(True):
         if firstComment[:100] in usedComments or len(firstComment) > 280:
             continue
         else:
-            api.update_status(firstComment)
-            print(firstComment)
+
+            try:
+                api.update_status(firstComment)
+                print(firstComment)
+            except Exception as e:
+                print('An exception occured when tweeting: ' + firstComment)
+                print('Moving on..')
+                continue
+
             usedComments.add(firstComment[:100])
             break
 
-    time.sleep(3)
-    #time.sleep(1800)#Tweet every 30 minutes
+    time.sleep(1800)#Tweet every 30 minutes
 
     count = count + 1
 
