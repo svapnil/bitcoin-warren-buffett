@@ -1,6 +1,6 @@
 # bitcoin-warren-buffett
 
-### https://twitter/bitbotvestor
+### https://twitter.com/bitbotvestor
 
 This twitter bot makes comments and predictions about Bitcoin just as well as your amateur cryptocurrency enthusiast.
 
