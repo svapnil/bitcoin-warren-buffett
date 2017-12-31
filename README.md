@@ -18,3 +18,5 @@ The two motivations behind this project were:
 To make this python script, I used the tweepy package to post on Twitter and praw to read from */r/Bitcoin* on Reddit.
 
 I used the set data structure to hold every message tweeted so far, so the script checks if the message has been tweeted before. If it had, then it iterates to the next controversial post.
+
+The bot is currently running on an AWS EC2 instance in North Virginia, constantly tweeting the information it pulls.
