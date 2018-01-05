@@ -60,7 +60,7 @@ while(True):
                         len(firstComment) <= 266):
                         firstComment += ' #cryptocurrency'
 
-                    #api.update_status(firstComment)
+                    api.update_status(firstComment)
                     print(firstComment)
                 except Exception as e:
                     print('An exception occured when tweeting: ' + firstComment)
@@ -70,7 +70,7 @@ while(True):
                 usedComments.add(firstComment[:100])
                 break
 
-        time.sleep(3)#Tweet every 30 minutes
+        time.sleep(1800)#Tweet every 30 minutes
 
         count = count + 1
     except Exception as e:
