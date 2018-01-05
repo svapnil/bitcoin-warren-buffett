@@ -30,31 +30,51 @@ count = 0
 
 #loop for the code in the Script
 while(True):
-    for submission in reddit.subreddit('bitcoin').controversial('day'):
-
-        try:
-            firstComment = submission.comments[0].body
-        except IndexError as ie:
-            print(submission.title + ' doesnt have a comment - skipping')
-            continue
-
-        if firstComment[:100] in usedComments or len(firstComment) > 280:
-            continue
-        else:
+    try:
+        for submission in reddit.subreddit('bitcoin').controversial('day'):
 
             try:
-                api.update_status(firstComment)
-                print(firstComment)
-            except Exception as e:
-                print('An exception occured when tweeting: ' + firstComment)
-                print('Moving on..')
+                firstComment = submission.comments[0].body
+            except IndexError as ie:
+                print(submission.title + ' doesnt have a comment - skipping')
                 continue
 
-            usedComments.add(firstComment[:100])
-            break
+            if firstComment[:100] in usedComments or len(firstComment) > 280:
+                continue
+            else:
 
-    time.sleep(1800)#Tweet every 30 minutes
+                try:
+                    #adding some hashtags to the tweets
+                    if(('bitcoin' in firstComment.lower() or
+                       'btc' in firstComment.lower()) and
+                       len(firstComment) <= 271):
+                       firstComment += ' #bitcoin'
 
-    count = count + 1
+                    if(('ethereum' in firstComment.lower() or
+                       'eth' in firstComment.lower()) and
+                       len(firstComment) <= 270):
+                       firstComment += ' #ethereum'
 
+                    if(('crypto' in firstComment.lower() or
+                        'cryptocurrency' in firstComment.lower()) and
+                        len(firstComment) <= 266):
+                        firstComment += ' #cryptocurrency'
+
+                    #api.update_status(firstComment)
+                    print(firstComment)
+                except Exception as e:
+                    print('An exception occured when tweeting: ' + firstComment)
+                    print('Moving on..')
+                    continue
+
+                usedComments.add(firstComment[:100])
+                break
+
+        time.sleep(3)#Tweet every 30 minutes
+
+        count = count + 1
+    except Exception as e:
+        print('Server was down, skipping..')
+        timer.sleep(1800)
+        continue
     #api.update_status() code to update status
