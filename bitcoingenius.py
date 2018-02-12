@@ -44,7 +44,7 @@ while(True):
                 continue
             else:
                 try:
-                    #api.update_status(firstComment)
+                    api.update_status(firstComment)
                     print(firstComment)
                 except Exception as e:
                     print(e)
