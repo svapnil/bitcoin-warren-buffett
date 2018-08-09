@@ -14,12 +14,7 @@ reddit = praw.Reddit(client_id= ACCOUNTPRIVATEINFO.REDDIT_CLIENT_ID,
                      client_secret= ACCOUNTPRIVATEINFO.REDDIT_CLIENT_SECRET,
                      user_agent= ACCOUNTPRIVATEINFO.REDDIT_USER_AGENT)
 
-usedComments = set()
-
-#load recent already posted tweets into set
-postedStatuses = tweepy.Cursor(api.user_timeline).items(100)
-for status in postedStatuses:
-    usedComments.add(status.text[:100])
+usedComments = reloadRecentComments()
 
 #there is a problem where tweepy status.text will output a concatonated version of the target
 #which is an issue for the set that holds individual tweets. To fix, i will only add the first
@@ -44,21 +39,30 @@ while(True):
                 continue
             else:
                 try:
-                    api.update_status(firstComment)
+                    #api.update_status(firstComment)
                     print(firstComment)
                 except Exception as e:
                     print(e)
                     print('An exception occured when tweeting: ' + firstComment)
                     print('Moving on..')
                     continue
-
+                if len(usedComments) > 1000:
+                    usedComments = reloadRecentComments()
                 usedComments.add(firstComment[:100])
                 break
 
-        time.sleep(3600)#Tweet every 60 minutes
+        time.sleep(2)#Tweet every 60 minutes (3600)
 
     except Exception as e:
         print('Server was down, skipping..')
         timer.sleep(1800)
         continue
     #api.update_status() code to update status
+
+def reloadRecentComments():
+    #load recent already posted tweets into set
+    usedComments = set()
+    postedStatuses = tweepy.Cursor(api.user_timeline).items(100)
+    for status in postedStatuses:
+        usedComments.add(status.text[:100])
+    return usedComments

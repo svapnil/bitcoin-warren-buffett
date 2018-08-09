@@ -3,9 +3,9 @@
 class TweetAddOns:
     @staticmethod
     def censorTweet(tweet):
-        swearWords = ["fuck","shit","damn","retard","bitch","fag","pussy","cunt","rape","tard"]
+        swearWords = ["fuck","shit","damn","retard","bitch","fag","pussy","cunt","rape","tard","penis","titty"]
         for swear in swearWords:
-            if swear in tweet:
+            if swear in tweet.lower():
                 tweet = tweet.replace(swear[1:],(len(swear)-1)*'*')
         return tweet
 
@@ -21,7 +21,9 @@ class TweetAddOns:
                              "invest":" #investments",
                              " cash":" #money",
                              "bitcoin cash":" #BCHbetterthanBTC",
-                             "bch": "#BitcoinCash"}
+                             "bch": " #BitcoinCash",
+                             "hodl": " #HODL",
+                             "lambo": " #LamboSoon"}
         #adding relevant hashtags to the tweet
         for keyword in hashtagDictionary:
             if (keyword in tweet.lower()) and (len(hashtagDictionary[keyword]) + len(tweet) <= 280) and (hashtagDictionary[keyword] not in tweet):
