@@ -3,6 +3,14 @@ import tweepy, praw, time, sys #tweepy for twitter, PRAW for reddi
 from userauthinfo import ACCOUNTPRIVATEINFO #class that stores private info to use APIs
 from tweetaddons import TweetAddOns #class that stores add ons for tweet
 
+def reloadRecentComments():
+    #load recent already posted tweets into set
+    usedComments = set()
+    postedStatuses = tweepy.Cursor(api.user_timeline).items(100)
+    for status in postedStatuses:
+        usedComments.add(status.text[:100])
+    return usedComments
+
 #corresponding information from your Twitter application:
 auth = tweepy.OAuthHandler(ACCOUNTPRIVATEINFO.TWITTER_CONSUMER_KEY, ACCOUNTPRIVATEINFO.TWITTER_CONSUMER_SECRET)
 auth.set_access_token(ACCOUNTPRIVATEINFO.TWITTER_ACCESS_KEY, ACCOUNTPRIVATEINFO.TWITTER_ACCESS_SECRET)
@@ -39,8 +47,8 @@ while(True):
                 continue
             else:
                 try:
-                    #api.update_status(firstComment)
-                    print(firstComment)
+                    api.update_status(firstComment)
+                    #print(firstComment)
                 except Exception as e:
                     print(e)
                     print('An exception occured when tweeting: ' + firstComment)
@@ -51,18 +59,11 @@ while(True):
                 usedComments.add(firstComment[:100])
                 break
 
-        time.sleep(2)#Tweet every 60 minutes (3600)
+        time.sleep(3600)#Tweet every 60 minutes (3600)
 
     except Exception as e:
         print('Server was down, skipping..')
-        timer.sleep(1800)
+        timer.sleep(3600) #sleep again
         continue
-    #api.update_status() code to update status
 
-def reloadRecentComments():
-    #load recent already posted tweets into set
-    usedComments = set()
-    postedStatuses = tweepy.Cursor(api.user_timeline).items(100)
-    for status in postedStatuses:
-        usedComments.add(status.text[:100])
-    return usedComments
+    #api.update_status() : code to update status
