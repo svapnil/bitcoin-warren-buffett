@@ -1,3 +1,8 @@
+#TESTING BRANCH
+#USE FOR TESTING BUGS
+#NOTES: 
+#PRINTS TWEET TO CONSOLE EVERY 2 SECONDS
+
 import tweepy, praw, time, sys #tweepy for twitter, PRAW for reddi
 
 from userauthinfo import ACCOUNTPRIVATEINFO #class that stores private info to use APIs
@@ -47,8 +52,10 @@ while(True):
                 continue
             else:
                 try:
-                    api.update_status(firstComment)
-                    #print(firstComment)
+		    #testing branch:
+		    #do not access api
+                    #api.update_status(firstComment)
+                    print(firstComment)
                 except Exception as e:
                     print(e)
                     print('An exception occured when tweeting: ' + firstComment)
@@ -59,11 +66,11 @@ while(True):
                 usedComments.add(firstComment[:100])
                 break
 
-        time.sleep(3600)#Tweet every 60 minutes (3600)
+        time.sleep(2)#Tweet every 2 seconds
 
     except Exception as e:
         print('Server was down, skipping..')
-        timer.sleep(3600) #sleep again
+        timer.sleep(2) #sleep again
         continue
 
     #api.update_status() : code to update status
